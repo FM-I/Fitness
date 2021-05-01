@@ -43,7 +43,7 @@ namespace Fitness.BL.Controller
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                if(formattor.Deserialize(fs) is List<User> users)
+                if(fs.Length > 0 && formattor.Deserialize(fs) is List<User> users)
                 {
                     return users;
                 }
@@ -85,6 +85,7 @@ namespace Fitness.BL.Controller
             CurrentUser.BirthDate = birthDate;
             CurrentUser.Weight = weight;
             CurrentUser.Height = height;
+            Save();
         }
     }
 }

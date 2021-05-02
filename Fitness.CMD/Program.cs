@@ -14,6 +14,7 @@ namespace Fitness.CMD
             var name = Console.ReadLine();
 
             var userController = new UserController(name);
+            var eatingController = new EatingController(userController.CurrentUser);
 
             if (userController.IsNewUser)
             {
@@ -30,7 +31,39 @@ namespace Fitness.CMD
             }
 
             Console.WriteLine(userController.CurrentUser);
+
+
+            Console.WriteLine("Что вы хотите сделать?");
+            Console.WriteLine("E - ввести прием пищи");
+
+            var key = Console.ReadKey();
+            Console.WriteLine();
+
+            if(key.Key == ConsoleKey.E)
+            {
+                var food = EnterEating();
+                eatingController.Add(food.Food, food.weight);
+
+                foreach (var item in eatingController.Eating.Foods)
+                {
+                    Console.WriteLine($"\t{item.Key.Name} - {item.Value}");
+                }
+
+            }
             Console.ReadLine();
+        }
+
+        private static (Food Food, double weight) EnterEating()
+        {
+            Console.Write("Введите имя продукта : ");
+            var food = Console.ReadLine();
+            var calories = ParseDouble("калорийность");
+            var prot = ParseDouble("белки");
+            var fats = ParseDouble("жиры");
+            var carbs = ParseDouble("углеводы");
+            var weight = ParseDouble("вес порции");
+
+            return (new Food(food, prot, fats, carbs, calories), weight);
         }
 
         private static DateTime PareseDateTime()
